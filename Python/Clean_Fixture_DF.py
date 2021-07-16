@@ -1,7 +1,8 @@
 import pandas as pd
 
-# cleans the excel fixture file into a dataframe that will be used as the basis for this project
+# Cleans the excel fixture file into a data frame that will be used as the basis for this project
 # This is part of the process to create the new season file
+
 
 class Fixture_DF:
     def __init__(self):
