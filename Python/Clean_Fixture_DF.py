@@ -5,14 +5,16 @@ import pandas as pd
 
 class Fixture_DF:
     def __init__(self):
-        self._fixture_list = pd.read_excel(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures\Fixtures_2016_2017.xlsx", header=1)
-
+        self._fixture_list = pd.read_excel(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures\Fixtures_2020_2021.xlsx", header=1)
         fixture_list = pd.DataFrame(self._fixture_list)
-        #fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away", "Referee"]]
-        fixture_list = fixture_list[["Day", "Date", "Home", "xG", "Score", "xG.1", "Away", "Referee"]]
-        fixture_list = fixture_list.dropna(subset=["Score"])
-        fixture_list = fixture_list.reset_index(drop=True)
-        self.fixture_list_df = fixture_list
+        try:
+            fixture_list = fixture_list[["Day", "Date", "Home", "xG", "Score", "xG.1", "Away", "Referee"]]
+        except KeyError:
+            fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away", "Referee"]]
+        finally:
+            fixture_list = fixture_list.dropna(subset=["Score"])
+            fixture_list = fixture_list.reset_index(drop=True)
+            self.fixture_list_df = fixture_list
 
         self.fixture_list_df["Winner"] = None
         self.fixture_list_df["Loser"] = None
