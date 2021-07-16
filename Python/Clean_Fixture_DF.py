@@ -34,5 +34,3 @@ class Fixture_DF:
                 self.fixture_list_df.loc[i, "Loser"] = "Tie"
 
 
-f = Fixture_DF()
-print(f)
