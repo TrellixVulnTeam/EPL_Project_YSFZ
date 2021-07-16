@@ -2,6 +2,7 @@ from Clean_Fixture_DF import Fixture_DF
 import pandas as pd
 
 # These standings are for the Premier League Teams
+# This is STEP 2 of the process to create the new season file
 fix = Fixture_DF()
 
 
@@ -164,5 +165,3 @@ class Standings:
             self.standings["xGD"] = self.standings["xG"] - self.standings["xGA"]
 
 
-s = Standings("yes")
-print(s.standings)
