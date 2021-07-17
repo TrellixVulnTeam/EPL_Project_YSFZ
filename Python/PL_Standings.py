@@ -269,8 +269,3 @@ class expected_standings(Standings):
             pass
         else:
             self.xStandings["xGD"] = self.xStandings["xGF"] - self.xStandings["xGA"]
-
-
-s = expected_standings("Yes")
-print(s.standings)
-print(s.xStandings)
