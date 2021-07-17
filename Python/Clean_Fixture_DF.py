@@ -16,6 +16,8 @@ class Fixture_DF:
         finally:
             fixture_list = fixture_list.dropna(subset=["Score"])
             fixture_list = fixture_list.reset_index(drop=True)
+            fixture_list["xG"] = fixture_list["xG"].round()
+            fixture_list["xG.1"] = fixture_list["xG.1"].round()
             self.fixture_list_df = fixture_list
 
         self.fixture_list_df["Winner"] = None
@@ -51,3 +53,4 @@ class Fixture_DF:
             else:
                 self.fixture_list_df.loc[i, "xWinner"] = "Tie"
                 self.fixture_list_df.loc[i, "xLoser"] = "Tie"
+
