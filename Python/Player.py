@@ -1,11 +1,9 @@
 import pandas as pd
-from Clean_Fixture_DF import Fixture_DF
-from PL_Standings import expected_standings
+from PL_Standings import expected_standings, fix
 import numpy as np
 
 # This is STEP 3 of the process to create the new season file
 s = expected_standings("yes")
-fix = Fixture_DF()
 
 
 class Player:
@@ -24,7 +22,6 @@ class Player:
     def expected_mini_standings(self):
         players_teams_exp_mini_standings = s.xStandings[s.xStandings["Team"].isin(self.players_teams)].reset_index(drop=True)
         return players_teams_exp_mini_standings
-
 
     def summary_statistics(self):
         sum_stats = self.mini_standings().agg([sum, np.mean, max, min]).transpose().drop("Team")
