@@ -1,10 +1,10 @@
 import pandas as pd
 from Clean_Fixture_DF import Fixture_DF
-from PL_Standings import Standings
+from PL_Standings import expected_standings
 import numpy as np
 
 # This is STEP 3 of the process to create the new season file
-s = Standings("yes")
+s = expected_standings("yes")
 fix = Fixture_DF()
 
 
@@ -20,6 +20,11 @@ class Player:
     def mini_standings(self):
         players_teams_mini_standings = s.standings[s.standings["Team"].isin(self.players_teams)].reset_index(drop=True)
         return players_teams_mini_standings
+
+    def expected_mini_standings(self):
+        players_teams_exp_mini_standings = s.xStandings[s.xStandings["Team"].isin(self.players_teams)].reset_index(drop=True)
+        return players_teams_exp_mini_standings
+
 
     def summary_statistics(self):
         sum_stats = self.mini_standings().agg([sum, np.mean, max, min]).transpose().drop("Team")
@@ -197,4 +202,3 @@ eli = Player(["Manchester City", "Tottenham", "West Brom", "Sheffield Utd", "Bri
 malachi = Player(["Manchester Utd", "Southampton", "Burnley", "Fulham", "West Ham"], "Malachi")
 sab = Player(["Chelsea", "Leicester City", "Leeds United", "Crystal Palace", "Newcastle Utd"], "Sabastian")
 
-print(sab.weekly_df())
