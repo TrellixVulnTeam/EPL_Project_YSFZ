@@ -165,3 +165,112 @@ class Standings:
             self.standings["xGD"] = self.standings["xG"] - self.standings["xGA"]
 
 
+class expected_standings(Standings):
+    def __init__(self, EnterYesForXG="No"):
+        super().__init__()
+        self._xG = EnterYesForXG
+        self.xStandings = pd.DataFrame()
+        self.xStandings["Team"] = fix.team_list
+        self.xStandings["MP"] = self.standings["MP"]
+        self.xStandings["xW"] = None
+        self.xStandings["xD"] = None
+        self.xStandings["xL"] = None
+        self.xStandings["xPts"] = None
+        self.xStandings["xGF"] = None
+        self.xStandings["xGA"] = None
+        self.xStandings["xGD"] = None
+
+        self._xWins()
+        self._Draws()
+        self._xLoss()
+        self._xPts()
+        self._xGF()
+        self._xGA()
+        self._xGDiff()
+        self.xStandings = (self.xStandings.sort_values(["xPts", "xGD"], ascending=False)).reset_index(drop=True)
+
+    def _xWins(self):
+        n = 0
+        for i in fix.team_list:
+            t = (fix.fixture_list_df[(fix.fixture_list_df["Home"] == f"{i}") | (fix.fixture_list_df["Away"] == f"{i}")])
+            wins = len(t[t["xWinner"] == f"{i}"])
+            self.xStandings.loc[n, "xW"] = wins
+            n += 1
+
+    def _Draws(self):
+        n = 0
+        for i in fix.team_list:
+            t = (fix.fixture_list_df[(fix.fixture_list_df["Home"] == f"{i}") | (fix.fixture_list_df["Away"] == f"{i}")])
+            wins = len(t[t["xWinner"] == "Tie"])
+            self.xStandings.loc[n, "xD"] = wins
+            n += 1
+
+    def _xLoss(self):
+        n = 0
+        for i in fix.team_list:
+            t = (fix.fixture_list_df[(fix.fixture_list_df["Home"] == f"{i}") | (fix.fixture_list_df["Away"] == f"{i}")])
+            wins = len(t[t["xLoser"] == f"{i}"])
+            self.xStandings.loc[n, "xL"] = wins
+            n += 1
+
+    def _xPts(self):
+        self.xStandings["xPts"] = (self.xStandings["xW"] * 3) + (self.xStandings["xD"])
+
+    def _xGF(self):
+        if self._xG == "No":
+            pass
+        elif "xG" not in fix.fixture_list_df.columns:
+            pass
+        else:
+            n = 0
+            for i in fix.team_list:
+                goals = 0.0
+                # Home xGoals For
+                h = (fix.fixture_list_df[(fix.fixture_list_df["Home"] == f"{i}")])
+                h = h.reset_index(drop=True)
+                for row in range(len(h)):
+                    s = (h["xG"][row])
+                    goals += round(s, 2)
+                # Away xGoals For
+                a = (fix.fixture_list_df[(fix.fixture_list_df["Away"] == f"{i}")])
+                a = a.reset_index(drop=True)
+                for r in range(len(a)):
+                    s = a["xG.1"][r]
+                    goals += round(s, 2)
+                self.xStandings.loc[n, "xGF"] = round(goals)
+                n += 1
+
+    def _xGA(self):
+        if self._xG == "No":
+            pass
+        elif "xG.1" not in fix.fixture_list_df.columns:
+            pass
+        else:
+            n = 0
+            for i in fix.team_list:
+                goals = 0.0
+                # Home Goals Against
+                h = (fix.fixture_list_df[(fix.fixture_list_df["Home"] == f"{i}")])
+                h = h.reset_index(drop=True)
+                for row in range(len(h)):
+                    s = h["xG.1"][row]
+                    goals += round(s, 2)
+                # Away Goals Against
+                a = (fix.fixture_list_df[(fix.fixture_list_df["Away"] == f"{i}")])
+                a = a.reset_index(drop=True)
+                for r in range(len(a)):
+                    s = a["xG"][r]
+                    goals += round(s, 2)
+                self.xStandings.loc[n, "xGA"] = round(goals)
+                n += 1
+
+    def _xGDiff(self):
+        if self._xG == "No":
+            pass
+        else:
+            self.xStandings["xGD"] = self.xStandings["xGF"] - self.xStandings["xGA"]
+
+
+s = expected_standings("Yes")
+print(s.standings)
+print(s.xStandings)
