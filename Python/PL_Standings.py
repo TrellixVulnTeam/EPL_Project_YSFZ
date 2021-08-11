@@ -7,8 +7,7 @@ fix = Fixture_DF()
 
 
 class Standings:
-    def __init__(self, EnterYesForXG="No"):
-        self._xG = str(EnterYesForXG).title()
+    def __init__(self):
         self.standings = pd.DataFrame()
         self.standings["Team"] = fix.team_list
         self.standings["MP"] = None
@@ -102,10 +101,10 @@ class Standings:
         self.standings["GD"] = self.standings["GF"] - self.standings["GA"]
 
 
-class expected_standings(Standings):
-    def __init__(self, EnterYesForXG="No"):
+class xStandings(Standings):
+    def __init__(self):
         super().__init__()
-        self._xG = EnterYesForXG
+
         self.xStandings = pd.DataFrame()
         self.xStandings["Team"] = fix.team_list
         self.xStandings["MP"] = self.standings["MP"]
@@ -154,9 +153,7 @@ class expected_standings(Standings):
         self.xStandings["xPts"] = (self.xStandings["xW"] * 3) + (self.xStandings["xD"])
 
     def _xGF(self):
-        if self._xG == "No":
-            pass
-        elif "xG" not in fix.fixture_list_df.columns:
+        if "xG" not in fix.fixture_list_df.columns:
             pass
         else:
             n = 0
@@ -178,9 +175,7 @@ class expected_standings(Standings):
                 n += 1
 
     def _xGA(self):
-        if self._xG == "No":
-            pass
-        elif "xG.1" not in fix.fixture_list_df.columns:
+        if "xG.1" not in fix.fixture_list_df.columns:
             pass
         else:
             n = 0
@@ -202,7 +197,6 @@ class expected_standings(Standings):
                 n += 1
 
     def _xGDiff(self):
-        if self._xG == "No":
-            pass
-        else:
             self.xStandings["xGD"] = self.xStandings["xGF"] - self.xStandings["xGA"]
+
+
