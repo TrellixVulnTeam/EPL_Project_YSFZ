@@ -9,26 +9,37 @@ class Fixture_DF:
         # The file being read needs to be the appropriate season
         self._fixture_list = pd.read_excel(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures\Fixtures_2020_2021.xlsx", header=1)
         fixture_list = pd.DataFrame(self._fixture_list)
-        try:
+
+        if "xG" in fixture_list.columns:
             fixture_list = fixture_list[["Day", "Date", "Home", "xG", "Score", "xG.1", "Away", "Referee"]]
-        except KeyError:
-            fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away", "Referee"]]
-        finally:
             fixture_list = fixture_list.dropna(subset=["Score"])
             fixture_list = fixture_list.reset_index(drop=True)
             fixture_list["xG"] = fixture_list["xG"].round()
             fixture_list["xG.1"] = fixture_list["xG.1"].round()
             self.fixture_list_df = fixture_list
 
-        self.fixture_list_df["Winner"] = None
-        self.fixture_list_df["Loser"] = None
-        self.fixture_list_df["xWinner"] = None
-        self.fixture_list_df["xLoser"] = None
-        self._win_loss()
-        self._expected_win_loss()
+            self.fixture_list_df["Winner"] = None
+            self.fixture_list_df["Loser"] = None
+            self.fixture_list_df["xWinner"] = None
+            self.fixture_list_df["xLoser"] = None
+            self._win_loss()
+            self._expected_win_loss()
 
-        self.team_list = list(self.fixture_list_df.Home.unique())
-        self.team_list.sort()
+            self.team_list = list(self.fixture_list_df.Home.unique())
+            self.team_list.sort()
+
+        else:
+            fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away", "Referee"]]
+            fixture_list = fixture_list.dropna(subset=["Score"])
+            fixture_list = fixture_list.reset_index(drop=True)
+            self.fixture_list_df = fixture_list
+
+            self.fixture_list_df["Winner"] = None
+            self.fixture_list_df["Loser"] = None
+            self._win_loss()
+
+            self.team_list = list(self.fixture_list_df.Home.unique())
+            self.team_list.sort()
 
     def _win_loss(self):
         for i in range(len(self.fixture_list_df)):
@@ -53,4 +64,5 @@ class Fixture_DF:
             else:
                 self.fixture_list_df.loc[i, "xWinner"] = "Tie"
                 self.fixture_list_df.loc[i, "xLoser"] = "Tie"
+
 
