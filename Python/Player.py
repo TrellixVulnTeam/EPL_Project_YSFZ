@@ -1,9 +1,9 @@
 import pandas as pd
-from PL_Standings import expected_standings, fix
+from PL_Standings import xStandings, fix
 import numpy as np
 
 # This is STEP 3 of the process to create the new season file
-s = expected_standings("yes")
+s = xStandings()
 
 
 class Player:
@@ -342,8 +342,11 @@ class Player:
         return xweekly_df
 
 
-bran = Player(["Everton", "Arsenal", "Liverpool", "Wolves", "Aston Villa"], "Brandon")
-eli = Player(["Manchester City", "Tottenham", "West Brom", "Sheffield Utd", "Brighton"], "Eli")
-mal = Player(["Manchester Utd", "Southampton", "Burnley", "Fulham", "West Ham"], "Malachi")
-sab = Player(["Chelsea", "Leicester City", "Leeds United", "Crystal Palace", "Newcastle Utd"], "Sabastian")
+bran = Player(["Liverpool","Arsenal","Everton","Aston Villa","Wolves"], "Brandon")
+eli = Player(["Manchester City","Tottenham","Brighton","West Brom","Sheffield Utd"], "Eli")
+mal = Player(["Manchester Utd","West Ham","Southampton","Burnley","Fulham"], "Malachi")
+sab = Player(["Chelsea","Leicester City","Leeds United","Newcastle Utd","Crystal Palace"], "Sabastian")
+
+
+
 
