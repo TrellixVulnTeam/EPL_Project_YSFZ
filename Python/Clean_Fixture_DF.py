@@ -7,7 +7,7 @@ import pandas as pd
 class Fixture_DF:
     def __init__(self):
         # The file being read needs to be the appropriate season
-        self._fixture_list = pd.read_excel(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures\Fixtures_2020_2021.xlsx", header=1)
+        self._fixture_list = pd.read_excel(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures\Fixtures_2021_2022.xlsx", header=1)
         fixture_list = pd.DataFrame(self._fixture_list)
 
         if "xG" in fixture_list.columns:
@@ -25,7 +25,7 @@ class Fixture_DF:
             self._win_loss()
             self._expected_win_loss()
 
-            self.team_list = list(self.fixture_list_df.Home.unique())
+            self.team_list = list(self.fixture_list_df.Home.unique()) + list(self.fixture_list_df.Away.unique())
             self.team_list.sort()
 
         else:
@@ -37,8 +37,7 @@ class Fixture_DF:
             self.fixture_list_df["Winner"] = None
             self.fixture_list_df["Loser"] = None
             self._win_loss()
-
-            self.team_list = list(self.fixture_list_df.Home.unique())
+            self.team_list = list(self.fixture_list_df.Home.unique()) + list(self.fixture_list_df.Away.unique())
             self.team_list.sort()
 
     def _win_loss(self):
