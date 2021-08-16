@@ -3,7 +3,7 @@ from Player import Player, s, bran, eli, mal, sab
 import math
 import matplotlib.pyplot as plt
 
-season = 2021
+season = 2022
 
 
 def player_season_standings():
@@ -27,7 +27,7 @@ def player_season_standings():
                      sum(bran.mini_standings()["GA"]), sum(eli.mini_standings()["GA"])]
     summary["GD"] = [sum(sab.mini_standings()["GD"]), sum(mal.mini_standings()["GD"]),
                      sum(bran.mini_standings()["GD"]), sum(eli.mini_standings()["GD"])]
-    summary = summary.sort_values("Pts/G", ascending=False).reset_index(drop=True)
+    summary = summary.sort_values(["Pts/G","GD"], ascending=False).reset_index(drop=True)
     return summary
 
 
@@ -67,31 +67,50 @@ def standings_verse_players(user, opp1, opp2, opp3, win_or_lose="Winner"):
     stat_vs_opp1 = 0
     stat_vs_opp2 = 0
     stat_vs_opp3 = 0
-
+    win_or_lose = win_or_lose.title()
     for u_t in user.players_teams:
         for opp1_t in opp1.players_teams:
-            opp1_team_in_home = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp1_t]
-            opp1_team_in_away = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp1_t]
-            win_home = len(opp1_team_in_home[opp1_team_in_home[win_or_lose] == f"{u_t}"])
-            stat_vs_opp1 += win_home
-            win_away = len(opp1_team_in_away[opp1_team_in_away[win_or_lose] == f"{u_t}"])
-            stat_vs_opp1 += win_away
+            away_vs_opp1 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp1_t]
+            home_vs_opp1 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp1_t]
+            if win_or_lose == "Draw":
+                stat_away = len(away_vs_opp1[away_vs_opp1["Winner"] == "Tie"])
+                stat_vs_opp1 += stat_away
+                stat_home = len(home_vs_opp1[home_vs_opp1["Winner"] == "Tie"])
+                stat_vs_opp1 += stat_home
+            else:
+                stat_away = len(away_vs_opp1[away_vs_opp1[win_or_lose] == f"{u_t}"])
+                stat_vs_opp1 += stat_away
+                stat_home = len(home_vs_opp1[home_vs_opp1[win_or_lose] == f"{u_t}"])
+                stat_vs_opp1 += stat_home
 
         for opp2_t in opp2.players_teams:
-            opp2_team_in_home = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp2_t]
-            opp2_team_in_away = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp2_t]
-            hwin = len(opp2_team_in_home[opp2_team_in_home[win_or_lose] == f"{u_t}"])
-            stat_vs_opp2 += hwin
-            awin = len(opp2_team_in_away[opp2_team_in_away[win_or_lose] == f"{u_t}"])
-            stat_vs_opp2 += awin
+            away_vs_opp2 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp2_t]
+            home_vs_opp2 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp2_t]
+            if win_or_lose == "Draw":
+                stat_away = len(away_vs_opp2[away_vs_opp2["Winner"] == "Tie"])
+                stat_vs_opp2 += stat_away
+                stat_home = len(home_vs_opp2[home_vs_opp2["Winner"] == "Tie"])
+                stat_vs_opp2 += stat_home
+            else:
+                stat_away = len(away_vs_opp2[away_vs_opp2[win_or_lose] == f"{u_t}"])
+                stat_vs_opp2 += stat_away
+                stat_home = len(home_vs_opp2[home_vs_opp2[win_or_lose] == f"{u_t}"])
+                stat_vs_opp2 += stat_home
 
         for opp3_t in opp3.players_teams:
-            opp3_team_in_home = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp3_t]
-            opp3_team_in_away = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp3_t]
-            hwin = len(opp3_team_in_home[opp3_team_in_home[win_or_lose] == f"{u_t}"])
-            stat_vs_opp3 += hwin
-            awin = len(opp3_team_in_away[opp3_team_in_away[win_or_lose] == f"{u_t}"])
-            stat_vs_opp3 += awin
+            away_vs_opp3 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp3_t]
+            home_vs_opp3 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp3_t]
+            if win_or_lose == "Draw":
+                stat_away = len(away_vs_opp3[away_vs_opp3["Winner"] == "Tie"])
+                stat_vs_opp3 += stat_away
+                stat_home = len(home_vs_opp3[home_vs_opp3["Winner"] == "Tie"])
+                stat_vs_opp3 += stat_home
+
+            else:
+                stat_away = len(away_vs_opp3[away_vs_opp3[win_or_lose] == f"{u_t}"])
+                stat_vs_opp3 += stat_away
+                stat_home = len(home_vs_opp3[home_vs_opp3[win_or_lose] == f"{u_t}"])
+                stat_vs_opp3 += stat_home
 
     return [stat_vs_opp1, stat_vs_opp2, stat_vs_opp3]
 
@@ -125,47 +144,57 @@ def player_rank_by_week(stat):
 # Player vs player standings
 sab_wins = standings_verse_players(sab, bran, mal, eli, "Winner")
 sab_loss = standings_verse_players(sab, bran, mal, eli, "Loser")
-
+sab_draw = standings_verse_players(sab, bran, mal, eli, "Draw")
+print(sab_draw)
 sab_vs = pd.DataFrame()
 sab_vs["vs_Player"] = [f"{sab.player_name}_V_Brandon", f"{sab.player_name}_V_Malachi", f"{sab.player_name}_V_Eli"]
 sab_vs["W"] = sab_wins
 sab_vs["L"] = sab_loss
-sab_vs["D"] = 50 - (sab_vs["W"] + sab_vs["L"])
+sab_vs["D"] = sab_draw
 sab_vs["Pts"] = (sab_vs["W"] *3) + sab_vs["D"]
-sab_vs = sab_vs[["vs_Player", "W", "D", "L", "Pts"]]
+sab_vs["Pts/G"] = sab_vs["Pts"]/((sab_vs["W"])+(sab_vs["L"])+(sab_vs["D"]))
+sab_vs = sab_vs[["vs_Player", "W", "D", "L", "Pts", "Pts/G"]]
 
 mal_wins = standings_verse_players(mal, bran, sab, eli, "Winner")
 mal_loss = standings_verse_players(mal, bran, sab, eli, "Loser")
+mal_draw = standings_verse_players(mal, bran, sab, eli, "Draw")
 
 mal_vs = pd.DataFrame()
 mal_vs["vs_Player"] = [f"{mal.player_name}_V_Brandon", f"{mal.player_name}_V_Sabastian", f"{mal.player_name}_V_Eli"]
 mal_vs["W"] = mal_wins
 mal_vs["L"] = mal_loss
-mal_vs["D"] = 50 - (mal_vs["W"] + mal_vs["L"])
+mal_vs["D"] = mal_draw
 mal_vs["Pts"] = (mal_vs["W"] *3) + mal_vs["D"]
-mal_vs = mal_vs[["vs_Player", "W", "D", "L", "Pts"]]
+mal_vs["Pts/G"] = mal_vs["Pts"]/((mal_vs["W"])+(mal_vs["L"])+(mal_vs["D"]))
+mal_vs = mal_vs[["vs_Player", "W", "D", "L", "Pts", "Pts/G"]]
 
 bran_wins = standings_verse_players(bran, mal, sab, eli, "Winner")
 bran_loss = standings_verse_players(bran, mal, sab, eli, "Loser")
+bran_draw = standings_verse_players(bran, mal, sab, eli, "Draw")
+
 
 bran_vs = pd.DataFrame()
 bran_vs["vs_Player"] = [f"{bran.player_name}_V_Malachi", f"{bran.player_name}_V_Sabastian", f"{bran.player_name}_V_Eli"]
 bran_vs["W"] = bran_wins
 bran_vs["L"] = bran_loss
-bran_vs["D"] = 50 - (bran_vs["W"] + bran_vs["L"])
+bran_vs["D"] = bran_draw
 bran_vs["Pts"] = (bran_vs["W"] *3) + bran_vs["D"]
-bran_vs = bran_vs[["vs_Player", "W", "D", "L", "Pts"]]
+bran_vs["Pts/G"] = bran_vs["Pts"]/((bran_vs["W"])+(bran_vs["L"])+(bran_vs["D"]))
+bran_vs = bran_vs[["vs_Player", "W", "D", "L", "Pts", "Pts/G"]]
 
 eli_wins = standings_verse_players(eli, mal, sab, bran, "Winner")
 eli_loss = standings_verse_players(eli, mal, sab, bran, "Loser")
+eli_draw = standings_verse_players(eli, mal, sab, bran, "Draw")
+
 
 eli_vs = pd.DataFrame()
 eli_vs["vs_Player"] = [f"{eli.player_name}_V_Malachi", f"{eli.player_name}_V_Sabastian", f"{eli.player_name}_V_Brandon"]
 eli_vs["W"] = eli_wins
 eli_vs["L"] = eli_loss
-eli_vs["D"] = 50 - (eli_vs["W"] + eli_vs["L"])
+eli_vs["D"] = eli_draw
 eli_vs["Pts"] = (eli_vs["W"] *3) + eli_vs["D"]
-eli_vs = eli_vs[["vs_Player", "W", "D", "L", "Pts"]]
+eli_vs["Pts/G"] = bran_vs["Pts"]/((eli_vs["W"])+(eli_vs["L"])+(eli_vs["D"]))
+eli_vs = eli_vs[["vs_Player", "W", "D", "L", "Pts", "Pts/G"]]
 
 
 standings = s.standings
