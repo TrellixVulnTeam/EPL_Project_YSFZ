@@ -343,8 +343,8 @@ class Player:
 
 
 bran = Player(["Liverpool","Arsenal","Everton","Aston Villa","Wolves"], "Brandon")
-eli = Player(["Manchester City","Tottenham","Brighton","West Brom","Sheffield Utd"], "Eli")
-mal = Player(["Manchester Utd","West Ham","Southampton","Burnley","Fulham"], "Malachi")
+eli = Player(["Manchester City","Tottenham","Brighton","Watford","Norwich City"], "Eli")
+mal = Player(["Manchester Utd","West Ham","Southampton","Burnley","Brentford"], "Malachi")
 sab = Player(["Chelsea","Leicester City","Leeds United","Newcastle Utd","Crystal Palace"], "Sabastian")
 
 
