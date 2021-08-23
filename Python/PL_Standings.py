@@ -107,7 +107,7 @@ class xStandings(Standings):
 
         self.xStandings = pd.DataFrame()
         self.xStandings["Team"] = fix.team_list
-        self.xStandings["MP"] = self.standings["MP"]
+        self.xStandings["MP"] = None
         self.xStandings["xW"] = None
         self.xStandings["xD"] = None
         self.xStandings["xL"] = None
@@ -120,6 +120,7 @@ class xStandings(Standings):
         self._Draws()
         self._xLoss()
         self._xPts()
+        self._xmatches_played()
         self._xGF()
         self._xGA()
         self._xGDiff()
@@ -151,6 +152,9 @@ class xStandings(Standings):
 
     def _xPts(self):
         self.xStandings["xPts"] = (self.xStandings["xW"] * 3) + (self.xStandings["xD"])
+
+    def _xmatches_played(self):
+        self.xStandings["MP"] = self.xStandings["xW"] + self.xStandings["xD"] + self.xStandings["xL"]
 
     def _xGF(self):
         if "xG" not in fix.fixture_list_df.columns:
