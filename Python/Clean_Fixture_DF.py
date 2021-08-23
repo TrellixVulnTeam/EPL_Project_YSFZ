@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 # Cleans the excel fixture file into a data frame that will be used as the basis for this project
 # This is STEP 1 of the process to create the new season file
 
@@ -24,8 +24,13 @@ class Fixture_DF:
             self.fixture_list_df["xLoser"] = None
             self._win_loss()
             self._expected_win_loss()
-
-            self.team_list = list(self.fixture_list_df.Home.unique()) + list(self.fixture_list_df.Away.unique())
+            unique_home_teams = list(self.fixture_list_df.Home.unique())
+            unique_away_teams = list(self.fixture_list_df.Away.unique())
+            self.unique_teams_grouped = unique_home_teams + unique_away_teams
+            self.unique_teams_grouped = np.array(self.unique_teams_grouped)
+            self.unique_teams_grouped=np.unique(self.unique_teams_grouped)
+            #self.team_list = list(self.fixture_list_df.Home.unique()) + list(self.fixture_list_df.Away.unique())
+            self.team_list = self.unique_teams_grouped.copy()
             self.team_list.sort()
 
         else:
