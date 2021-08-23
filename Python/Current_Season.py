@@ -145,7 +145,7 @@ def player_rank_by_week(stat):
 sab_wins = standings_verse_players(sab, bran, mal, eli, "Winner")
 sab_loss = standings_verse_players(sab, bran, mal, eli, "Loser")
 sab_draw = standings_verse_players(sab, bran, mal, eli, "Draw")
-print(sab_draw)
+
 sab_vs = pd.DataFrame()
 sab_vs["vs_Player"] = [f"{sab.player_name}_V_Brandon", f"{sab.player_name}_V_Malachi", f"{sab.player_name}_V_Eli"]
 sab_vs["W"] = sab_wins
