@@ -70,8 +70,8 @@ def standings_verse_players(user, opp1, opp2, opp3, win_or_lose="Winner"):
     win_or_lose = win_or_lose.title()
     for u_t in user.players_teams:
         for opp1_t in opp1.players_teams:
-            away_vs_opp1 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp1_t]
-            home_vs_opp1 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp1_t]
+            away_vs_opp1 = user.teams_fixture_results()[(user.teams_fixture_results()["Home"] == opp1_t) & (user.teams_fixture_results()["Away"] == u_t)]
+            home_vs_opp1 = user.teams_fixture_results()[(user.teams_fixture_results()["Away"] == opp1_t) & (user.teams_fixture_results()["Home"] == u_t)]
             if win_or_lose == "Draw":
                 stat_away = len(away_vs_opp1[away_vs_opp1["Winner"] == "Tie"])
                 stat_vs_opp1 += stat_away
@@ -84,8 +84,8 @@ def standings_verse_players(user, opp1, opp2, opp3, win_or_lose="Winner"):
                 stat_vs_opp1 += stat_home
 
         for opp2_t in opp2.players_teams:
-            away_vs_opp2 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp2_t]
-            home_vs_opp2 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp2_t]
+            away_vs_opp2 = user.teams_fixture_results()[(user.teams_fixture_results()["Home"] == opp2_t) & (user.teams_fixture_results()["Away"] == u_t)]
+            home_vs_opp2 = user.teams_fixture_results()[(user.teams_fixture_results()["Away"] == opp2_t) & (user.teams_fixture_results()["Home"] == u_t)]
             if win_or_lose == "Draw":
                 stat_away = len(away_vs_opp2[away_vs_opp2["Winner"] == "Tie"])
                 stat_vs_opp2 += stat_away
@@ -98,8 +98,8 @@ def standings_verse_players(user, opp1, opp2, opp3, win_or_lose="Winner"):
                 stat_vs_opp2 += stat_home
 
         for opp3_t in opp3.players_teams:
-            away_vs_opp3 = user.teams_fixture_results()[user.teams_fixture_results()["Home"] == opp3_t]
-            home_vs_opp3 = user.teams_fixture_results()[user.teams_fixture_results()["Away"] == opp3_t]
+            away_vs_opp3 = user.teams_fixture_results()[(user.teams_fixture_results()["Home"] == opp3_t) & (user.teams_fixture_results()["Away"] == u_t)]
+            home_vs_opp3 = user.teams_fixture_results()[(user.teams_fixture_results()["Away"] == opp3_t) & (user.teams_fixture_results()["Home"] == u_t)]
             if win_or_lose == "Draw":
                 stat_away = len(away_vs_opp3[away_vs_opp3["Winner"] == "Tie"])
                 stat_vs_opp3 += stat_away
@@ -193,7 +193,7 @@ eli_vs["W"] = eli_wins
 eli_vs["L"] = eli_loss
 eli_vs["D"] = eli_draw
 eli_vs["Pts"] = (eli_vs["W"] *3) + eli_vs["D"]
-eli_vs["Pts/G"] = bran_vs["Pts"]/((eli_vs["W"])+(eli_vs["L"])+(eli_vs["D"]))
+eli_vs["Pts/G"] = eli_vs["Pts"]/((eli_vs["W"])+(eli_vs["L"])+(eli_vs["D"]))
 eli_vs = eli_vs[["vs_Player", "W", "D", "L", "Pts", "Pts/G"]]
 
 
